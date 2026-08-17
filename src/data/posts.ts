@@ -66,7 +66,7 @@ export const posts: Post[] = [
 
           nas uma delas, como foi demonstrado em aula.
         `,
-        image: "/venn-diagram.svg",
+        image: `${import.meta.env.BASE_URL}venn-diagram.svg`,
         imageAlt: "Diagrama de Venn com três círculos: Computer Graphics, Image Processing e Computer Vision, com a intersecção central destacada",
         imageCaption: "A disciplina se concentra na intersecção entre Computer Graphics, Image Processing e Computer Vision.",
       },
