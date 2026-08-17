@@ -39,7 +39,6 @@ export const posts: Post[] = [
       {
         heading: "O que eu achava que veria na disciplina",
         body: `
-          Antes de começar a disciplina, eu imaginava que estudaríamos:
 
           Eu imaginei que seria algo envolvendo a GPU, como a geração
 
@@ -53,8 +52,6 @@ export const posts: Post[] = [
       {
         heading: "O que eu entendi que estudaremos",
         body: `
-          Depois das primeiras aulas e explicações, entendi que a disciplina
-          abordará:
 
           Eu entendi que iremos abordar um pouco de cada um dos três te
           
