@@ -226,6 +226,7 @@ export default function PostPage() {
         <p
           style={{
             fontSize: "19px",
+            textAlign: "justify",
             lineHeight: 1.75,
             color: "#c0c0c0",
             margin: "0 0 64px",
@@ -257,6 +258,7 @@ export default function PostPage() {
             <p
               style={{
                 fontSize: "16px",
+                textAlign: "justify",
                 lineHeight: 1.85,
                 color: "#808080",
                 margin: "0 0 24px",
