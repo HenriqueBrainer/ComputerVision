@@ -14,6 +14,6 @@ export const router = createBrowserRouter(
     },
   ],
   {
-    basename: "/ComputerVision/",
+    basename: import.meta.env.BASE_URL,
   }
 )
