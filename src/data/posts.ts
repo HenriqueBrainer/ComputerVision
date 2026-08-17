@@ -56,13 +56,13 @@ export const posts: Post[] = [
           Depois das primeiras aulas e explicações, entendi que a disciplina
           abordará:
 
-          Eu entendi que iremos abordar um pouco de cada um dos três te
+          Eu entendi que iremos abordar um pouco de cada um dos três te-
           
           mas principais: Computer Graphics, Image Processing e Computer
           
           Vision. Porém, o conteúdo será mais centralizado na interseção
           
-          entre essas três áreas, sem um aprofundamento específico em ape
+          entre essas três áreas, sem um aprofundamento específico em ape-
 
           nas uma delas, como foi demonstrado em aula.
         `,
