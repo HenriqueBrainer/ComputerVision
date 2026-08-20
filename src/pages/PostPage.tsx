@@ -403,7 +403,7 @@ export default function PostPage() {
         }}
       >
         <span style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontSize: "15px", color: "#303030" }}>
-          CompVis © 2026
+          henriquebrainer © 2026
         </span>
         <button
           onClick={() => navigate("/")}
