@@ -40,28 +40,14 @@ export const posts: Post[] = [
         heading: "O que eu achava que veria na disciplina",
         body: `
 
-          Eu imaginei que seria algo envolvendo a GPU, como a geração
-
-          e o processamento de cada pixel, incluindo a manipulação de
-
-          imagens e o processo completo realizado pela GPU para gerar
-
-          imagens.
+          Eu imaginei que seria algo envolvendo a GPU, como a geração e o processamento de cada pixel, incluindo a manipulação de imagens e o processo completo realizado pela GPU para gerar imagens.
         `,
       },
       {
         heading: "O que eu entendi que estudaremos",
         body: `
 
-          Eu entendi que iremos abordar um pouco de cada um dos três te
-          
-          mas principais: Computer Graphics, Image Processing e Computer
-          
-          Vision. Porém, o conteúdo será mais centralizado na interseção
-          
-          entre essas três áreas, sem um aprofundamento específico em ape
-          
-          nas uma delas, como foi demonstrado em aula.
+          Eu entendi que iremos abordar um pouco de cada um dos três temas principais: Computer Graphics, Image Processing e Computer Vision. Porém, o conteúdo será mais centralizado na interseção entre essas três áreas, sem um aprofundamento específico em apenas uma delas, como foi demonstrado em aula.
         `,
         image: `${import.meta.env.BASE_URL}venn-diagram.svg`,
         imageAlt: "Diagrama de Venn com três círculos: Computer Graphics, Image Processing e Computer Vision, com a intersecção central destacada",
