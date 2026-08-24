@@ -1,12 +1,69 @@
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { useNavigate, useParams } from "react-router"
 import { posts } from "../data/posts"
+
+function useReadingProgress() {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0)
+    }
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  return progress
+}
+
+function RevealSection({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(18px)",
+        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  )
+}
 
 export default function PostPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
+  const progress = useReadingProgress()
 
   const idx = posts.findIndex((p) => p.slug === slug)
   const post = posts[idx]
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [slug])
 
   if (!post) {
     return (
@@ -111,6 +168,28 @@ export default function PostPage() {
         </button>
       </header>
 
+      {/* Reading progress bar */}
+      <div
+        style={{
+          position: "sticky",
+          top: "64px",
+          left: 0,
+          right: 0,
+          height: "2px",
+          zIndex: 99,
+          backgroundColor: "rgba(255,255,255,0.06)",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: `${progress}%`,
+            backgroundColor: post.color,
+            transition: "width 0.1s linear",
+          }}
+        />
+      </div>
+
       {/* Hero section */}
       <section style={{ position: "relative", height: "60vh", minHeight: "440px", overflow: "hidden" }}>
         {post.heroImage ? (
@@ -204,7 +283,7 @@ export default function PostPage() {
           style={{
             fontFamily: "'DM Serif Display', Georgia, serif",
             fontSize: "80px",
-            color: "rgba(255,255,255,0.04)",
+            color: "rgba(255,255,255,0.16)",
             lineHeight: 1,
             userSelect: "none",
           }}
@@ -239,7 +318,8 @@ export default function PostPage() {
 
         {/* Sections */}
         {post.sections.map((section, i) => (
-          <div key={i} style={{ marginBottom: "64px" }}>
+          <RevealSection key={i} delay={i * 60}>
+          <div style={{ marginBottom: "64px" }}>
             {section.heading && (
               <h2
                 style={{
@@ -249,23 +329,34 @@ export default function PostPage() {
                   margin: "0 0 20px",
                   letterSpacing: "-0.015em",
                   lineHeight: 1.2,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "14px",
                 }}
               >
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: post.color, flexShrink: 0 }} />
                 {section.heading}
               </h2>
             )}
 
-            <p
-              style={{
-                fontSize: "16px",
-                lineHeight: 1.85,
-                textAlign: "justify",
-                color: "#808080",
-                margin: "0 0 24px",
-              }}
-            >
-              {section.body}
-            </p>
+            {section.body
+              .split(/\n\s*\n/)
+              .map((s) => s.trim())
+              .filter(Boolean)
+              .map((paragraph, pi) => (
+                <p
+                  key={pi}
+                  style={{
+                    fontSize: "16px",
+                    lineHeight: 1.85,
+                    textAlign: "justify",
+                    color: "#808080",
+                    margin: "0 0 20px",
+                  }}
+                >
+                  {paragraph}
+                </p>
+              ))}
 
             {section.code && (
               <div
@@ -317,7 +408,45 @@ export default function PostPage() {
                 )}
               </figure>
             )}
+
+            {section.source && (
+              <a
+                href={section.source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginTop: "4px",
+                  padding: "10px 16px",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "#0d0d0d",
+                  color: "#909090",
+                  fontSize: "12px",
+                  letterSpacing: "0.03em",
+                  textDecoration: "none",
+                  transition: "border-color 0.25s ease, color 0.25s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = post.color
+                  e.currentTarget.style.color = post.color
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"
+                  e.currentTarget.style.color = "#909090"
+                }}
+              >
+                <span style={{ textTransform: "uppercase", letterSpacing: "0.1em", fontSize: "10px", color: "#505050" }}>
+                  Fonte
+                </span>
+                <span style={{ width: "1px", height: "12px", background: "rgba(255,255,255,0.15)" }} />
+                {section.source.label}
+                <span style={{ fontSize: "13px" }}>↗</span>
+              </a>
+            )}
           </div>
+          </RevealSection>
         ))}
       </article>
 
