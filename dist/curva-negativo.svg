@@ -1,0 +1,55 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradOrig" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#080808" />
+      <stop offset="100%" stop-color="#f0f0f0" />
+    </linearGradient>
+    <linearGradient id="gradNeg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f0f0f0" />
+      <stop offset="100%" stop-color="#080808" />
+    </linearGradient>
+    <style>
+      .title { font-family: 'DM Serif Display', Georgia, serif; fill: #f0f0f0; }
+      .caption { font-family: 'DM Sans', system-ui, sans-serif; fill: #707070; }
+      .label { font-family: 'DM Sans', system-ui, sans-serif; fill: #909090; }
+      .curve-label { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 600; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="540" fill="#080808" />
+
+  <text class="title" x="60" y="50" font-size="22">O negativo: s = (L-1) - r</text>
+  <text class="caption" x="60" y="76" font-size="13">Cada tom de cinza é espelhado em torno do ponto médio da escala</text>
+
+  <!-- gradient bars -->
+  <rect x="60" y="110" width="380" height="46" fill="url(#gradOrig)" stroke="#303030" />
+  <text class="label" x="60" y="98" font-size="12">Imagem original</text>
+
+  <rect x="520" y="110" width="380" height="46" fill="url(#gradNeg)" stroke="#303030" />
+  <text class="label" x="520" y="98" font-size="12">Negativo</text>
+
+  <text x="470" y="140" font-family="DM Sans, sans-serif" font-size="20" fill="#a78bfa" text-anchor="middle">→</text>
+
+  <!-- plot -->
+  <g stroke="#1a1a1a" stroke-width="1">
+    <line x1="150" y1="220" x2="150" y2="480" />
+    <line x1="810" y1="220" x2="810" y2="480" />
+    <line x1="150" y1="480" x2="810" y2="480" />
+    <line x1="150" y1="220" x2="810" y2="220" />
+  </g>
+  <g stroke="#404040" stroke-width="2">
+    <line x1="150" y1="480" x2="810" y2="480" />
+    <line x1="150" y1="480" x2="150" y2="220" />
+  </g>
+
+  <!-- identity (dashed) -->
+  <line x1="150" y1="480" x2="810" y2="220" stroke="#404040" stroke-width="1.5" stroke-dasharray="6,6" />
+  <text class="label" x="700" y="245" font-size="13">identidade</text>
+
+  <!-- negative line -->
+  <line x1="150" y1="220" x2="810" y2="480" stroke="#a78bfa" stroke-width="3.5" stroke-linecap="round" />
+  <text class="curve-label" x="480" y="295" font-size="15" fill="#a78bfa" text-anchor="middle">s = (L-1) − r</text>
+
+  <text class="label" x="480" y="510" font-size="14" text-anchor="middle">r — intensidade de entrada</text>
+  <text class="label" x="60" y="350" font-size="14" text-anchor="middle" transform="rotate(-90, 60, 350)">s — intensidade de saída</text>
+</svg>

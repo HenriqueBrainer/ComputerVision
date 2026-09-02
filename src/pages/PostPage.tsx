@@ -19,6 +19,20 @@ function useReadingProgress() {
   return progress
 }
 
+function renderRich(text: string, color: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g).filter(Boolean)
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} style={{ color, fontWeight: 700 }}>
+          {part.slice(2, -2)}
+        </strong>
+      )
+    }
+    return <span key={i}>{part}</span>
+  })
+}
+
 function RevealSection({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
@@ -354,7 +368,7 @@ export default function PostPage() {
                     margin: "0 0 20px",
                   }}
                 >
-                  {paragraph}
+                  {renderRich(paragraph, post.color)}
                 </p>
               ))}
 
