@@ -105,7 +105,7 @@ Esse mesmo princípio é usado em sensores de câmeras digitais, que costumam te
     description:
       "Um resumo sobre as transformações de intensidade no domínio espacial: negativo, log, potência (gama) e as transformações lineares definidas por partes.",
     tag: "Post 3",
-    date: "31 agosto, 2026",
+    date: "02 setembro, 2026",
     readTime: "6 min",
     image: "https://cdn.prod.website-files.com/61a51a6fff9085700039fcd8/63bc673c33fd7c7a6843246b_vis%C3%A3o%20computacional.png",
     heroImage: "",
