@@ -19,6 +19,7 @@ interface Section {
   image?: string
   imageAlt?: string
   imageCaption?: string
+  imageContain?: boolean
   code?: string
   source?: { label: string; url: string }
 }
@@ -159,63 +160,121 @@ Quando **γ < 1**, a transformação clareia a imagem, realçando detalhes em re
   {
     id: 4,
     slug: "Post 4",
-    title: "????",
-    subtitle: "",
-    description: "",
+    title: "Filtragem espacial e detecção de bordas: ensinando o computador a enxergar contorno",
+    subtitle: "Do kernel que passeia pixel a pixel até o detector de Canny — com uma parada obrigatória no ruído",
+    description:
+      "Como funcionam os filtros espaciais (passa-baixa e passa-alta), a diferença entre correlação e convolução, e o caminho das derivadas até o detector de bordas de Canny.",
     tag: "Post 4",
-    date: "?? ??, 2026",
-    readTime: "5 min",
+    date: "09 setembro, 2026",
+    readTime: "8 min",
     image: "https://cdn.prod.website-files.com/61a51a6fff9085700039fcd8/63bc673c33fd7c7a6843246b_vis%C3%A3o%20computacional.png",
     heroImage: "",
     color: "#f472b6",
     sections: [
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Filtragem espacial: o filtro que passeia pela imagem",
+        body: `Até agora, nas transformações de intensidade, cada pixel era tratado como se vivesse sozinho: pegava seu valor, aplicava uma função, pronto. A **filtragem espacial** muda a regra do jogo — aqui o pixel precisa **conversar com a vizinhança**.
 
-          ____________________________________________________________
+A ideia é simples: você define uma pequena matriz (que atende por vários nomes — **máscara**, **kernel**, **janela** ou **template**), encosta ela em cima de um pedaço da imagem, multiplica elemento a elemento, soma tudo e joga o resultado no pixel do centro. Aí desliza o filtro um pixel para o lado e repete. E de novo. E de novo, até cobrir a imagem inteira.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+Detalhe importante: a **imagem original nunca é modificada**. Cada pixel filtrado vai para uma imagem nova, senão o resultado de um pixel contaminaria o cálculo do seguinte.`,
+        image: "https://media1.tenor.com/m/GXqGilvoSIMAAAAd/dog-hand-moment.gif",
+        imageAlt: "GIF de um cachorro dando a pata para uma mão estendida",
+        imageContain: true,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Passa-baixa e passa-alta: quem entra na festa",
+        body: `Filtrar, na prática, é **aceitar ou rejeitar certas frequências** da imagem. E os filtros se dividem em dois times:
 
-          ____________________________________________________________
+**Passa-baixa**: aceitam as baixas frequências e barram as altas. Resultado? Reduzem ruído, conectam pequenas descontinuidades e — o efeito colateral mais famoso — **borram a imagem** (o bom e velho blur).
 
-          ____________________________________________________________
+**Passa-alta**: fazem o oposto, deixando passar justamente as variações bruscas. Servem para **realçar detalhes**: bordas, linhas, curvas, manchas.
 
-          ____________________________________________________________
-        `,
+Guarde essa divisão, porque o resto do post é basicamente uma briga entre esses dois times: primeiro a gente suaviza (passa-baixa), depois a gente realça (passa-alta). E, spoiler, fazer na ordem errada dá problema.`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Correlação vs convolução: a pegadinha dos 180 graus",
+        body: `Aquele processo que descrevi lá em cima — deslizar, multiplicar, somar — tecnicamente **não é convolução**. É **correlação**. Ela mede o quanto uma região da imagem "se parece" com o kernel, funcionando como um detector de padrões.
 
-          ____________________________________________________________
+A **convolução** tem um passo extra no começo: o kernel é **rotacionado em 180 graus** (inverte na horizontal, depois na vertical) antes de tudo. Parece firula, mas é o que garante duas propriedades valiosas: **associatividade** (x ⊛ g ⊛ h pode ser agrupado como quiser) e **comutatividade** (x ⊛ h = h ⊛ x). Na prática, isso permite combinar vários filtros em um só antes de tocar na imagem.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+E a boa notícia preguiçosa: **quando o kernel é simétrico, correlação e convolução dão exatamente o mesmo resultado**. Como boa parte dos kernels de suavização é simétrica, muita gente passa a vida inteira usando os dois termos como sinônimo e nunca é desmentida.`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Suavização: média, ponderada e mediana",
+        body: `Os filtros de suavização atenuam variações bruscas de intensidade. O mais básico é o **filtro de média**: todos os elementos valem 1 e o resultado é dividido por uma constante de normalização de **1/(m×n)** — no caso de um 3×3, 1/9.
 
-          ____________________________________________________________
+Na **média ponderada**, o centro pesa mais que as bordas (o clássico 1-2-1 / 2-4-2 / 1-2-1), e a normalização vira a soma dos pesos — de preferência uma potência de 2, porque computador gosta. O efeito depende tanto dos valores quanto do **tamanho** do filtro: quanto maior a máscara, mais borrada fica a saída.
 
-          ____________________________________________________________
+Mas existe uma família que não faz conta nenhuma — os **filtros não-lineares** (ou de estatística de ordem), que ordenam os pixels da vizinhança e escolhem um. O **mínimo** erode objetos claros, o **máximo** dilata e preenche falhas, o **moda** pega o valor mais frequente, e o queridinho é o **filtro de mediana**: ordena os nove valores de um 3×3, pega o quinto e pronto. Ele é **imbatível contra ruído sal e pimenta** (aqueles pontinhos brancos e pretos espalhados), porque um pixel absurdamente claro ou escuro simplesmente vai parar na ponta da lista ordenada e é ignorado — enquanto o filtro de média faria questão de incluí-lo na conta e espalhar a sujeira.`,
+      },
+      {
+        heading: "Bordas: onde a imagem muda de ideia",
+        body: `Agora a virada de chave. **Detectar bordas** é identificar mudanças bruscas — descontinuidades — em uma imagem. Faz sentido: boa parte da informação semântica e de forma está justamente nos contornos. Tanto que o ideal, o padrão-ouro, é o **desenho de linhas de um artista**: poucos traços e você já sabe o que é.
 
-          ____________________________________________________________
-        `,
+Bordas aparecem por vários motivos: descontinuidade da **normal da superfície**, da **profundidade**, da **cor da superfície** ou da **iluminação**.
+
+E como achar isso matematicamente? Encarando a **imagem como uma função**: se você plotar a intensidade de uma linha da imagem, as bordas viram penhascos íngremes. E penhasco, no mundo do cálculo, se acha com **derivada**. A primeira derivada dá picos nos extremos da transição — daí vem a **magnitude do gradiente**, que mede a "força" da borda (alta = transição abrupta, baixa = degradê suave). A segunda derivada é ainda mais precisa: ela passa por **zero exatamente em cima da borda**, o famoso *cruzamento em zero*, calculado com o operador **Laplaciano**. A orientação do gradiente, por sua vez, sempre aponta perpendicular à borda.`,
+      },
+      {
+        heading: "O problema: derivada adora ruído",
+        body: `Eis o plot twist. Derivada **amplifica ruído**. Filtros derivativos respondem intensamente a qualquer pixel que difira dos vizinhos — e ruído é, por definição, exatamente isso.
+
+O resultado é aquele gráfico deprimente: você tem um sinal com uma borda nítida, aplica a derivada e recebe de volta um borrão de picos aleatórios onde é impossível apontar onde a borda está. Você pediu contorno, levou caos.
+
+**A solução é suavizar primeiro** (passa-baixa, lembra?) e derivar depois. E tem um atalho elegante: pelo **teorema da derivada da convolução**, derivar a imagem suavizada é o mesmo que convoluir a imagem com a **derivada da Gaussiana** já pronta. Duas operações viram uma, e o resultado é idêntico.
+
+O preço? O clássico **trade-off entre suavização e localização**: sigma pequeno detecta detalhes finos mas deixa passar ruído; sigma grande limpa tudo mas borra e desloca as bordas.`,
+        image: "https://media1.tenor.com/m/pSu4e55-1R8AAAAd/dog-biting-hand.gif",
+        imageAlt: "GIF de um cachorro mordendo a mão de uma pessoa",
+        imageContain: true,
+      },
+      {
+        heading: "Os kernels clássicos: Roberts, Prewitt e Sobel",
+        body: `A magnitude do gradiente pode ser aproximada por diferentes kernels, e três nomes aparecem sempre:
+
+**Roberts** é o minimalista: um 2×2 que trabalha nas diagonais de 45º e 135º, realçando bordas inclinadas mais que as outras.
+
+**Prewitt** usa um 3×3 com pesos iguais — uma diferença finita aplicada em três linhas de uma vez.
+
+**Sobel** é o Prewitt com autoestima: dá **peso 2 para a linha ou coluna central**, o que embute uma suavização no próprio filtro e o torna mais resistente a ruído. É por isso que ele é o mais usado dos três até hoje.`,
+        code: `# Prewitt                # Sobel
+hx = [-1  0  1]          hx = [-1  0  1]
+     [-1  0  1]               [-2  0  2]
+     [-1  0  1]               [-1  0  1]
+
+hy = [-1 -1 -1]          hy = [-1 -2 -1]
+     [ 0  0  0]               [ 0  0  0]
+     [ 1  1  1]               [ 1  2  1]`,
+      },
+      {
+        heading: "Canny: o detector que junta tudo",
+        body: `Antes de escolher um detector, vale saber o que é um detector **ótimo**. São três critérios: **boa detecção** (minimizar falsos positivos e falsos negativos), **boa localização** (a borda detectada deve estar o mais perto possível da real) e **resposta única** (um ponto detectado para cada ponto real, sem borda triplicada).
+
+O **detector de Canny** ataca os três em quatro passos:
+
+**1.** Filtra a imagem com as derivadas x e y da Gaussiana — removendo o ruído que geraria bordas falsas.
+**2.** Calcula **magnitude e orientação** do gradiente, identificando as regiões de variação abrupta.
+**3.** Aplica **supressão de não-máximos**: para cada pixel, compara sua magnitude com a dos dois vizinhos **na direção do gradiente**. Se ele não for o maior, é zerado. Isso afina aquelas bordas gordas de vários pixels em linhas de um pixel só.
+**4.** Faz **limiarização com histerese**, usando dois limiares (L e H). Acima de H é borda forte e fica. Abaixo de L é descartado. E entre os dois? Só sobrevive se estiver **conectado a uma borda forte** — é o que evita que uma borda real fique picotada no meio.
+
+O σ continua sendo o botão de ajuste: **σ baixo** pega detalhes finos, **σ alto** pega só as bordas de grande escala.`,
+      },
+      {
+        heading: "Na prática: três linhas de Python",
+        body: `Toda essa teoria cabe em um punhado de linhas com **scikit-image**. Rode com σ = 1 e σ = 3 na mesma imagem ruidosa e a diferença fala por si: o primeiro devolve um contorno trêmulo e cheio de fragmentos, o segundo entrega uma linha limpa e contínua.
+
+E é aqui que o processamento de imagens fica viciante: você começou com uma matriz de números sem sentido nenhum e terminou com o computador desenhando o contorno das coisas — que é, no fundo, o mesmo traço que o artista faz. Agora vai lá brincar com o sigma.`,
+        code: `from skimage import feature, io
+
+img = io.imread("imagem.png", as_gray=True)
+
+bordas_finas  = feature.canny(img, sigma=1)
+bordas_largas = feature.canny(img, sigma=3)`,
+        image: "https://media1.tenor.com/m/LjwBOfvg4r4AAAAd/scuba-scuba-cat.gif",
+        imageAlt: "GIF de um gatinho com roupa de mergulho dançando",
+        imageContain: true,
+        
       },
     ],
   },

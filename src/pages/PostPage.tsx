@@ -399,12 +399,29 @@ export default function PostPage() {
             )}
 
             {section.image && (
-              <figure style={{ margin: "0 -48px 24px", position: "relative" }}>
-                <div style={{ overflow: "hidden", aspectRatio: "16/9" }}>
+              <figure
+                style={
+                  section.imageContain
+                    ? { margin: "8px auto 28px", maxWidth: "360px", textAlign: "center" }
+                    : { margin: "0 -48px 24px", position: "relative" }
+                }
+              >
+                <div
+                  style={
+                    section.imageContain
+                      ? { overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }
+                      : { overflow: "hidden", aspectRatio: "16/9" }
+                  }
+                >
                   <img
                     src={section.image}
                     alt={section.imageAlt}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    loading="lazy"
+                    style={
+                      section.imageContain
+                        ? { width: "100%", height: "auto", objectFit: "contain", display: "block" }
+                        : { width: "100%", height: "100%", objectFit: "cover", display: "block" }
+                    }
                   />
                 </div>
                 {section.imageCaption && (
@@ -414,7 +431,8 @@ export default function PostPage() {
                       color: "#505050",
                       marginTop: "12px",
                       letterSpacing: "0.02em",
-                      paddingLeft: "48px",
+                      paddingLeft: section.imageContain ? 0 : "48px",
+                      fontStyle: section.imageContain ? "italic" : "normal",
                     }}
                   >
                     {section.imageCaption}
