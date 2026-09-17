@@ -165,7 +165,7 @@ Quando **γ < 1**, a transformação clareia a imagem, realçando detalhes em re
     description:
       "Como funcionam os filtros espaciais (passa-baixa e passa-alta), a diferença entre correlação e convolução, e o caminho das derivadas até o detector de bordas de Canny.",
     tag: "Post 4",
-    date: "09 setembro, 2026",
+    date: "17 setembro, 2026",
     readTime: "8 min",
     image: "https://cdn.prod.website-files.com/61a51a6fff9085700039fcd8/63bc673c33fd7c7a6843246b_vis%C3%A3o%20computacional.png",
     heroImage: "",
