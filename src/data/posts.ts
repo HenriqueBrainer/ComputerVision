@@ -281,63 +281,47 @@ bordas_largas = feature.canny(img, sigma=3)`,
   {
     id: 5,
     slug: "Post 5",
-    title: "????",
-    subtitle: "",
-    description: "",
+    title: "A verdadeira história do pixel: spoiler, ele não é um quadradinho",
+    subtitle: "De uma amostra matemática no Manchester Baby até o Toy Story, passando pelo \"Dogma Central\"",
+    description:
+      "Um resumo da palestra de Alvy Ray Smith no Computer History Museum: o que um pixel realmente é, onde apareceram os primeiros pixels e como tudo convergiu no primeiro filme totalmente digital.",
     tag: "Post 5",
-    date: "?? ??, 2026",
+    date: "01 outubro, 2026",
     readTime: "5 min",
     image: "https://cdn.prod.website-files.com/61a51a6fff9085700039fcd8/63bc673c33fd7c7a6843246b_vis%C3%A3o%20computacional.png",
     heroImage: "",
     color: "#22d3ee",
     sections: [
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "O pixel não é um quadradinho colorido",
+        body: `Se você der zoom em qualquer foto digital, vai ver uma grade de quadradinhos. Daí a conclusão óbvia: **pixel é um quadradinho colorido**. Alvy Ray Smith, pioneiro da computação gráfica e cofundador da Pixar, diz que essa imagem está errada — e que sempre esteve.
 
-          ____________________________________________________________
+Segundo ele, o pixel é uma **amostra** de uma imagem, ou seja, um número que representa o valor da imagem em um ponto. Os quadradinhos que aparecem no zoom são só um jeito de a tela *desenhar* essas amostras, não o pixel em si. Por isso a frase mais provocativa da palestra: **você não consegue ver um pixel**.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+A parte bonita é que isso não é aproximação. Pelo teorema da amostragem, se a amostragem for bem feita, a imagem original pode ser reconstruída **de forma exata**. Smith escreveu um livro inteiro sobre isso (*A Biography of the Pixel*) justamente porque estamos nadando num oceano de pixels — ele estima cerca de **1 zeta-pixel, um 1 seguido de 21 zeros** — e quase ninguém sabe o que eles são.`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Onde nasceu o primeiro pixel",
+        body: `Quando o primeiro pixel apareceu numa tela? Pela pesquisa de Smith, no **Manchester Baby**, na Inglaterra, em **1947** — cerca de dez anos antes do que a história contada por aí costuma dizer. Para chegar a essa data, ele precisou desmontar muita história revisionista e criar definições bem específicas do que conta como "o primeiro" de cada coisa.
 
-          ____________________________________________________________
+O caminho até lá passa por dois gênios. **Alan Turing** inventou o computador de programa armazenado em 1936, mas na prática era software, e lento demais. **John von Neumann** percebeu o que Turing tinha feito, e os dois entenderam que, para ganhar velocidade, era preciso fazer isso em **hardware eletrônico** — o computador como conhecemos hoje. Com máquinas rápidas, as pessoas começaram a fazer imagens nelas.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+E Smith faz questão de uma correção de crédito: **Tim Johnson**, e não só Ivan Sutherland (colega dele no MIT), seria o criador do primeiro programa de gráficos 3D interativos. Já os primeiros pixels **coloridos** surgiram na **NASA**, no fim dos anos 1960, e os primeiros pixels **RGB** vieram do **NYIT** (New York Institute of Technology), onde o próprio Smith ajudou a montar o melhor laboratório de computação gráfica do mundo.`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "O Dogma Central e os vinte anos até o primeiro filme",
+        body: `O NYIT virou um viveiro de gente que depois foi parar na Lucasfilm. Só que ainda havia problemas demais para resolver antes de fazer um **filme digital**, e ninguém imaginava que isso levaria cerca de **20 anos**.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+No meio do caminho entra o que Smith chama de **Dogma Central**: um acordo nunca escrito de que a computação gráfica deveria ser **fiel ao mundo real** — a luz, os materiais e o movimento de uma cena digital tinham que se comportar como os de uma cena filmada. Ele não é uma exigência técnica, é uma escolha que a área abraçou, e foi essa escolha que guiou a evolução das imagens geradas por computador.`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Lei de Moore, Toy Story e a Grande Convergência Digital",
+        body: `O outro ingrediente é a **Lei de Moore**, que, vale lembrar, não é uma lei de verdade, e sim uma observação sobre o ritmo de crescimento do poder de processamento. Assim como o Dogma Central, ela não era obrigatória, mas teve efeito enorme sobre a computação gráfica: quanto mais barato e rápido o hardware, mais pixels dava para calcular.
 
-          ____________________________________________________________
+Segundo Smith, as duas coisas se encontraram em **1995**, com o **Toy Story** da Pixar, o primeiro longa totalmente animado por computador. Para ele, esse foi o momento em que todos os tipos de mídia antigos se fundiram em um só meio — a **Grande Convergência Digital**. Hoje, ele aposta que estamos às vésperas de uma explosão de arte feita com computadores.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+Conectando com a disciplina: tudo o que vimos nos posts anteriores — negativo, gama, filtros, bordas — opera sobre esses números, as amostras. Saber que o pixel é uma **amostra**, e não um quadradinho, muda a forma de pensar sobre o que estamos realmente filtrando.`,
+        source: { label: "The True History of the Pixel — Computer History Museum", url: "https://computerhistory.org/blog/the-true-history-of-the-pixel/" },
       },
     ],
   },
