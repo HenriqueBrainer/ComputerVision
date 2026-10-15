@@ -328,63 +328,171 @@ Conectando com a disciplina: tudo o que vimos nos posts anteriores — negativo,
   {
     id: 6,
     slug: "Post 6",
-    title: "????",
-    subtitle: "",
-    description: "",
+    title: "Domínio da frequência: tudo é soma de senos (e o aliasing cobra a conta)",
+    subtitle: "De Fourier ao antialiasing: ver a imagem pelo espectro, filtrar com uma multiplicação e entender por que amostrar mal estraga tudo",
+    description:
+      "Um resumo da aula de domínio da frequência: Série e Transformada de Fourier, espectro, dualidade, filtros passa-baixa e notch, teorema da amostragem, aliasing e antialiasing — com exemplos gerados em Python.",
     tag: "Post 6",
-    date: "?? ??, 2026",
-    readTime: "5 min",
+    date: "15 outubro, 2026",
+    readTime: "10 min",
     image: "https://cdn.prod.website-files.com/61a51a6fff9085700039fcd8/63bc673c33fd7c7a6843246b_vis%C3%A3o%20computacional.png",
     heroImage: "",
     color: "#34d399",
     sections: [
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Fourier: qualquer sinal é uma soma de senos",
+        body: `Até aqui, tudo o que fizemos com imagens aconteceu no **domínio espacial**: mexendo em pixels e vizinhanças. Agora a gente troca de óculos e olha a imagem pelas **frequências** que a compõem.
 
-          ____________________________________________________________
+A ideia vem de **Jean-Baptiste Joseph Fourier**, em 1807: **qualquer função periódica pode ser escrita como a soma de senos e/ou cossenos de frequências diferentes, cada um multiplicado por um coeficiente**. A ideia foi recebida com ceticismo na época, o que é compreensível: somar ondas suaves para formar uma onda quadrada, cheia de quinas, parece trapaça. Mas funciona, e a imagem abaixo mostra isso acontecendo.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+**Lembrete rápido:** quanto mais senoides entram na soma, mais a aproximação gruda no sinal original. Os termos de frequência baixa dão o formato geral; os de frequência alta dão as quinas e os detalhes.`,
+        image: `${import.meta.env.BASE_URL}fourier-serie.png`,
+        imageAlt: "Quatro gráficos mostrando uma onda quadrada aproximada pela soma de uma, duas, três e quatro senoides, cada vez mais parecida com o original",
+        imageCaption: "Onda quadrada (rosa) aproximada por somas de senoides (verde). Gerado em Python.",
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "A Transformada de Fourier: ida e volta sem perder nada",
+        body: `A **Transformada de Fourier (FT)** leva uma função do domínio espacial para o da frequência. A **Transformada Inversa (IFT)** faz o caminho de volta. E o mais importante: **a função é recuperada por completo, sem perda de informação**. É o mesmo dado, só visto de outro ângulo.
 
-          ____________________________________________________________
+Isso dá o fluxo de trabalho de toda filtragem em frequência: **imagem → FT → mexe no espectro → IFT → imagem filtrada**.
 
-          ____________________________________________________________
+O resultado da FT é um **número complexo**, com parte real e parte imaginária. Para visualizar, a gente usa a **magnitude**, chamada de **espectro de Fourier** (ou espectro da frequência): ela diz **quanto** de cada frequência existe na imagem. Já o **ângulo de fase** diz **onde** essa frequência está, mas quase nunca é exibido, porque é mais fácil enxergar o conteúdo no próprio domínio espacial.
 
-          ____________________________________________________________
-        `,
+**Lembrete rápido:** espectro = "quanto de cada frequência". Fase = "onde". Ida e volta, sem perdas.`,
+        code: `FT:   F(u) = ∫ f(x) · e^(-j2πux) dx      (x de -∞ a +∞)
+IFT:  f(x) = ∫ F(u) · e^(+j2πux) du      (u de -∞ a +∞)
+
+F(u)   = R(u) + j·I(u)         número complexo
+|F(u)| = sqrt(R² + I²)         espectro (quanto)
+φ(u)   = arctan(I / R)         fase (onde)`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "FT em imagens: do loop quádruplo ao fftshift",
+        body: `Em uma imagem de M linhas e N colunas, a FT vira uma **soma dupla**: para cada posição (u, v) do espectro, percorremos **todos os pixels** da imagem, multiplicando cada um por cos(θ) e sin(θ), com θ = 2π(ur/M + vc/N). Na aula implementamos exatamente isso na mão, com **quatro loops aninhados**. Ótimo para entender, péssimo para usar: o custo cresce com o quadrado do número de pixels. Na prática se usa a **FFT** (Fast Fourier Transform), que dá o mesmo resultado em uma fração do tempo.
 
-          ____________________________________________________________
+Tem mais duas pegadinhas na hora de mostrar o espectro. A primeira: a frequência zero cai no canto, então usamos o **fftshift** para levá-la ao **centro**. A segunda: as amplitudes são gigantescas perto do centro, e o espectro puro parece quase todo preto. A solução é a velha conhecida do Post 3: **transformação logarítmica**, somando um epsilon minúsculo para não calcular log de zero.
 
-          ____________________________________________________________
+**Lembrete rápido:** no espectro centralizado, o **centro** guarda as **baixas frequências** (áreas suaves, brilho geral) e as **bordas** guardam as **altas frequências** (contornos, detalhes e ruído).`,
+        code: `import numpy as np
+from PIL import Image
 
-          ____________________________________________________________
-        `,
+img = np.array(Image.open("picture64.gif").convert("L"))
+
+F = np.fft.fft2(img)                          # FT 2D (versão rápida)
+F_shift = np.fft.fftshift(F)                  # frequência zero no centro
+espectro = np.log(np.abs(F_shift) + 1e-7)     # magnitude + log para enxergar
+recuperada = np.real(np.fft.ifft2(F))         # IFT: volta a imagem original`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Dualidade: o que o espaço faz, a frequência desfaz",
+        body: `Os dois domínios se espelham, e isso rende três regras de bolso:
 
-          ____________________________________________________________
+**Impulso ↔ constante.** Um impulso no espaço (variação abrupta e localizada) contém **todas as frequências**. Já uma constante no espaço (nenhuma variação) tem **só a frequência zero**.
 
-          ____________________________________________________________
+**Alargar ↔ estreitar.** Se a função fica mais larga em um domínio, ela fica mais estreita no outro, e vice-versa. Na imagem, o retângulo estreito na vertical gera um espectro espalhado na vertical, e o retângulo largo faz o contrário.
 
-          ____________________________________________________________
-        `,
+**Convolução ↔ multiplicação.** Convoluir duas funções no espaço equivale a **multiplicar** suas transformadas na frequência (e vice-versa). Essa é a regra que amarra tudo: o kernel que deslizava pela imagem no Post 4 pode ser trocado por uma **multiplicação ponto a ponto** no espectro. O **filtro passa-tudo**, por exemplo, é a convolução com um impulso (a identidade): no espectro, é multiplicar tudo por 1.
+
+**Lembrete rápido:** convolução no espaço = multiplicação na frequência. Foi por isso que a filtragem virou "pintar uma máscara sobre o espectro".`,
+        image: `${import.meta.env.BASE_URL}dualidade-retangulos.png`,
+        imageAlt: "Dois retângulos brancos em fundo preto, um estreito e um largo, cada um ao lado do seu espectro de Fourier com padrão de listras",
+        imageCaption: "Dualidade na prática: retângulos de formatos diferentes e seus espectros (escala log, com fftshift).",
+      },
+      {
+        heading: "Filtro passa-baixa: um círculo no centro do espectro",
+        body: `Filtrar no domínio da frequência é multiplicar o espectro por uma **máscara**. No **passa-baixa**, a máscara é um círculo branco no centro: tudo que está dentro (baixas frequências) passa, tudo que está fora (altas frequências) vira zero. O raio do círculo é a **frequência de corte**.
+
+O efeito é o mesmo do borramento que vimos no Post 4: **quanto menor o raio, mais altas frequências são cortadas e mais borrada fica a imagem**. É a versão em frequência do "quanto maior o kernel de média, mais borrada a saída".
+
+Um detalhe extra, que a gente vê no raio 30 da imagem: cortar de forma abrupta (o filtro **ideal**) deixa uns **ondulados** perto das bordas, o chamado *ringing*. Por isso, na prática, se usam máscaras de transição suave, como a **Butterworth** e a **Gaussiana**.
+
+**Lembrete rápido:** passa-baixa = círculo no centro do espectro. Raio menor, mais blur.`,
+        code: `N = img.shape[0]                              # imagem quadrada
+yy, xx = np.mgrid[0:N, 0:N]
+mascara = ((yy - N//2)**2 + (xx - N//2)**2) <= raio**2   # círculo central
+
+filtrada = np.real(np.fft.ifft2(np.fft.ifftshift(F_shift * mascara)))`,
+        image: `${import.meta.env.BASE_URL}passa-baixa-frequencia.png`,
+        imageAlt: "Imagem original com formas geométricas, seu espectro, a máscara circular do filtro e três resultados com raios de corte 60, 30 e 10, cada vez mais borrados",
+        imageCaption: "Passa-baixa ideal com raios 60, 30 e 10. Imagem de teste sintética, gerada em Python.",
+      },
+      {
+        heading: "Filtro notch: apagando ruído periódico com borracha",
+        body: `Alguns defeitos são quase impossíveis de tirar no espaço, mas viram coisa trivial na frequência. O exemplo clássico é o **ruído periódico**: o padrão *moiré* de uma foto de jornal escaneada, ou uma interferência senoidal sobre a foto.
+
+O truque é que um padrão que se repete regularmente vira, no espectro, **poucos pontos brilhantes isolados**, e dá para ver exatamente onde eles estão. Basta construir uma máscara com "buracos" nesses pontos, o **filtro notch** (ou **rejeita-banda**, quando o ruído forma um anel) e multiplicar pelo espectro. Na IFT, o padrão some e o resto da imagem fica praticamente intacto. Nos slides, os exemplos eram o carro com moiré e a foto da Lua com ruído senoidal, ambos limpos com filtros Butterworth.
+
+**Lembrete rápido:** ruído periódico = pontos brilhantes no espectro. Notch = zerar esses pontos (e seus simétricos).`,
+        image: `${import.meta.env.BASE_URL}filtro-notch.png`,
+        imageAlt: "Imagem com listras diagonais de ruído, seu espectro com dois picos circulados, a máscara notch com dois pontos pretos e o resultado sem as listras",
+        imageCaption: "Ruído senoidal adicionado artificialmente, picos no espectro, máscara notch e resultado.",
+      },
+      {
+        heading: "Amostragem e o teorema de Nyquist",
+        body: `Funções contínuas não cabem no computador, então elas são convertidas em valores discretos por dois passos: a **amostragem** (pegar o valor da função em intervalos uniformes de **ΔT**, com taxa de 1/ΔT) e a **quantização** (guardar o valor de cada amostra).
+
+Amostrar no espaço tem um efeito curioso no espectro: a transformada original **se repete em cópias**, espaçadas de **1/ΔT**. Dependendo da taxa, saem três situações:
+
+**Sobreamostragem**: ΔT pequeno, cópias bem separadas.
+
+**Amostragem crítica**: cópias encostadas uma na outra (frequência de Nyquist).
+
+**Subamostragem**: ΔT grande, cópias **sobrepostas**, e a transformada original não dá mais para recuperar.
+
+Isso leva ao **teorema da amostragem**: uma função de **banda limitada** (cuja FT é zero fora de um intervalo finito de frequências) pode ser recuperada exatamente a partir de suas amostras, desde que a taxa seja **maior que o dobro da maior frequência** do sinal (a **taxa de Nyquist**). Para recuperar, basta um passa-baixa ideal que isole uma única cópia.
+
+E olha a ponte com o Post 5: se o pixel é uma **amostra**, é este teorema que garante que a imagem original pode ser reconstruída.
+
+**Lembrete rápido:** amostre a mais de 2 × a maior frequência, ou o sinal original se perde.`,
+        code: `Recuperável se:   1/ΔT > 2 · μmax
+(taxa de amostragem > o dobro da maior frequência do sinal)`,
+        image: `${import.meta.env.BASE_URL}aliasing-1d.png`,
+        imageAlt: "Gráfico de uma senoide de 9 Hz amostrada a 10 Hz, onde as amostras parecem formar uma senoide lenta de 1 Hz",
+        imageCaption: "Um sinal de 9 Hz amostrado a 10 Hz (abaixo do mínimo de 18 Hz) se disfarça de sinal de 1 Hz.",
+      },
+      {
+        heading: "Aliasing: quando as cópias se atropelam",
+        body: `**Aliasing** é o nome do estrago quando amostramos **abaixo da taxa de Nyquist**: as cópias do espectro se sobrepõem, e fica impossível separar uma delas. A frequência alta passa a se **fantasiar de frequência baixa**, como no gráfico anterior. E ele é inevitável em sinais de tamanho finito, então **está sempre presente em imagens digitais**.
+
+Em imagens, ele aparece de duas formas. O **temporal** acontece entre os quadros de uma sequência, e o exemplo clássico é a **roda de carroça** girando para trás no vídeo (a taxa de quadros é baixa demais para a rotação). O **espacial** vem da subamostragem na própria imagem: **serrilhados** (jaggies), saliências falsas e **padrões de frequência que não existiam** na original.
+
+Redimensionar imagem é um caso típico. **Ampliar** é sobreamostrar (sem problema). **Reduzir** é subamostrar (aliasing à vista): no vizinho mais próximo, reduzir pela metade é jogar fora uma linha sim, outra não, e uma coluna sim, outra não.
+
+A defesa se chama **antialiasing**: aplicar um **passa-baixa (blur) antes de reamostrar**. Ao atenuar as altas frequências, sobra menos conteúdo para a taxa menor dar conta. A imagem sai um pouco mais borrada, mas sem anéis falsos, como mostra o disco de teste.
+
+**Lembrete rápido:** primeiro borra, depois reduz. Nunca o contrário.`,
+        code: `from PIL import Image, ImageFilter
+
+img = Image.open("imagem.png").convert("L")
+w, h = img.size
+
+# descarta pixels direto: aliasing
+ruim = img.resize((w // 4, h // 4), Image.NEAREST)
+
+# passa-baixa antes de reduzir: antialiasing
+boa = img.filter(ImageFilter.GaussianBlur(2)).resize((w // 4, h // 4), Image.NEAREST)`,
+        image: `${import.meta.env.BASE_URL}aliasing-imagem.png`,
+        imageAlt: "Disco de anéis concêntricos original, versão reduzida com anéis falsos por aliasing e versão reduzida após borramento, com muito menos artefatos",
+        imageCaption: "Reduzir 4× só descartando pixels cria anéis falsos; borrar antes elimina boa parte deles.",
+      },
+      {
+        heading: "Resumo-lembrete: a cola do post",
+        body: `**Fourier**: toda função periódica é soma de senos e cossenos com frequências e coeficientes diferentes.
+
+**FT e IFT**: levam a imagem para a frequência e de volta, sem perda de informação.
+
+**Espectro**: magnitude da FT, o "quanto" de cada frequência. Centro = baixas frequências, bordas = altas. Use fftshift e log para visualizar.
+
+**Dualidade**: impulso ↔ constante, alargar ↔ estreitar, convolução ↔ multiplicação.
+
+**Passa-baixa**: círculo no centro do espectro, quanto menor o raio, mais blur. **Notch**: zera os picos do ruído periódico.
+
+**Nyquist**: amostrar a mais de 2 × a maior frequência. Abaixo disso, aliasing.
+
+**Antialiasing**: passa-baixa antes de reduzir a imagem.
+
+Material-base: slides de Computação Visual do Prof. André Kishimoto (2026), adaptados de Gonzalez e Woods (2010), Majumder e Gopi (2018), Azevedo, Conci e Leta (2022) e Cruvinel (2012). Os gráficos e imagens deste post foram gerados em Python.`,
+        source: { label: "Slides do Prof. André Kishimoto — licença CC BY-SA 4.0", url: "https://creativecommons.org/licenses/by-sa/4.0/" },
       },
     ],
   },
