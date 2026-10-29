@@ -499,63 +499,93 @@ Material-base: slides de Computação Visual do Prof. André Kishimoto (2026), a
   {
     id: 7,
     slug: "Post 7",
-    title: "????",
-    subtitle: "",
-    description: "",
+    title: "GPU: milhares de contas ao mesmo tempo (e é assim que o pixel chega na tela)",
+    subtitle: "Do paralelismo ao pipeline gráfico: o que a GPU tem por dentro, como ela desenha um quadro e onde mais ela é usada",
+    description:
+      "Um resumo do glossário da Unity sobre a Unidade de Processamento Gráfico: por que ela é rápida, os componentes principais, as etapas para renderizar um quadro, os três tipos de GPU e os usos além dos jogos.",
     tag: "Post 7",
-    date: "?? ??, 2026",
-    readTime: "5 min",
+    date: "29 outubro, 2026",
+    readTime: "7 min",
     image: "https://cdn.prod.website-files.com/61a51a6fff9085700039fcd8/63bc673c33fd7c7a6843246b_vis%C3%A3o%20computacional.png",
     heroImage: "",
     color: "#fb923c",
     sections: [
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "O que é uma GPU, e por que ela é rápida",
+        body: `Lá no Post 1, eu disse que imaginava a disciplina girando em torno da GPU: a geração e o processamento de cada pixel. Pois bem, chegou a hora de olhar para ela de perto.
 
-          ____________________________________________________________
+Uma **GPU** (unidade de processamento gráfico) é um processador especializado em fazer **muitos cálculos em paralelo**. Ela nasceu para renderizar imagens, vídeo e gráficos 3D. Num jogo ou aplicação 3D em tempo real, é ela quem pega os dados da cena e produz os pixels que o jogador vê, repetindo isso dezenas de vezes por segundo.
 
-          ____________________________________________________________
+O segredo da velocidade é o **paralelismo**. Em vez de poucos núcleos poderosos resolvendo tarefas uma depois da outra (o jeito da CPU), a GPU quebra uma carga grande em muitas operações pequenas e resolve várias delas ao mesmo tempo. As duas trabalham juntas: a CPU cuida de coisas como a lógica do jogo e manda as instruções gráficas para a GPU.
 
-          ____________________________________________________________
-        `,
+**Lembrete rápido:** CPU = poucos núcleos fortes, em sequência. GPU = muitos núcleos simples, em paralelo.`,
+        image: `${import.meta.env.BASE_URL}cpu-vs-gpu.svg`,
+        imageAlt: "Comparação entre CPU, com quatro núcleos grandes, e GPU, com uma grade de dezenas de núcleos pequenos",
+        imageCaption: "A CPU aposta em poucos núcleos potentes; a GPU, em muitos núcleos simples trabalhando juntos.",
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Por dentro: núcleos, VRAM, shaders e APIs",
+        body: `O glossário da Unity separa a GPU em quatro peças principais:
 
-          ____________________________________________________________
+**Núcleos (cores):** as unidades que executam as operações em paralelo. O nome muda conforme o fabricante: são núcleos CUDA nas GPUs NVIDIA e processadores de fluxo nas GPUs AMD.
 
-          ____________________________________________________________
+**Memória de vídeo (VRAM):** memória dedicada, de banda larga, que guarda texturas, malhas e dados do quadro perto da GPU. GPUs integradas costumam dividir a memória do sistema.
 
-          ____________________________________________________________
-        `,
+**Shaders:** programas que rodam na GPU. Eles posicionam vértices, calculam a cor dos pixels e também podem fazer trabalho de propósito geral, no caso dos shaders de computação.
+
+**Drivers e APIs gráficas:** a camada de software que liga os aplicativos à GPU. APIs como DirectX, Vulkan, Metal e OpenGL oferecem a interface para mandar comandos gráficos, e os drivers traduzem esses comandos para o hardware específico.
+
+**Lembrete rápido:** hardware (núcleos e VRAM) + programas na GPU (shaders) + software que conversa com ela (drivers e APIs).`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "O caminho de um quadro: do 3D ao pixel",
+        body: `Para renderizar um único quadro, a GPU segue o **pipeline gráfico**: uma sequência de estágios que transforma dados de uma cena 3D em uma imagem 2D.
 
-          ____________________________________________________________
+**1. Enviar:** a CPU manda as chamadas de desenho, dizendo quais malhas, materiais e configurações usar.
 
-          ____________________________________________________________
+**2. Processar vértices:** os shaders de vértice levam os vértices de cada malha do espaço 3D da cena para as posições usadas na imagem.
 
-          ____________________________________________________________
-        `,
+**3. Rasterizar:** os triângulos resultantes viram **fragmentos**, que correspondem a pixels em potencial na tela.
+
+**4. Sombrear pixels:** os shaders de fragmento calculam a cor de cada fragmento, usando texturas, iluminação e materiais.
+
+**5. Saída:** a imagem é escrita no buffer de quadro e apresentada no display.
+
+A ponte com a disciplina está no passo 4. O shader de fragmento roda para **cada** fragmento, e cada um calcula sua cor sem depender dos vizinhos. É exatamente o tipo de trabalho que a GPU faz bem, e lembra bastante as transformações de intensidade do Post 3. Como exemplo meu (não vem do glossário), um negativo de imagem seria assim num shader:`,
+        code: `// fragment shader: roda uma vez para CADA pixel, em paralelo
+vec4 cor = texture(imagem, uv);
+saida = vec4(1.0 - cor.rgb, 1.0);   // negativo: s = 1 - r`,
+        image: `${import.meta.env.BASE_URL}pipeline-grafico.svg`,
+        imageAlt: "Cinco caixas em sequência: enviar, processar vértices, rasterizar, sombrear pixels e saída, com um triângulo que vira pixels coloridos",
+        imageCaption: "Do triângulo abstrato aos pixels coloridos: os cinco estágios do pipeline gráfico.",
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Três tipos de GPU",
+        body: `As GPUs se dividem em três tipos, conforme onde ficam e de onde vem a memória:
 
-          ____________________________________________________________
+**Integrada:** está no mesmo chip ou pacote da CPU e divide a RAM do sistema. Gasta menos energia, por isso aparece em laptops, celulares, tablets e headsets de VR autônomos. Serve bem para o uso do dia a dia, jogos leves e aplicativos móveis.
 
-          ____________________________________________________________
+**Discreta:** fica em uma placa de vídeo própria, com **VRAM dedicada**. Entrega mais desempenho gráfico e de computação, ao custo de mais energia e calor (às vezes pede refrigeração dedicada). É a escolha para jogos de ponta, criação de conteúdo 3D e IA rodando localmente.
 
-          ____________________________________________________________
-        `,
+**Virtual (nuvem):** a GPU fica em um data center de um provedor e é acessada remotamente, com a memória alocada no hardware hospedeiro. Combina com cargas de IA, renderização remota e aplicativos na nuvem.
+
+**Lembrete rápido:** integrada = divide com a CPU; discreta = tem tudo só para ela; virtual = mora em outro lugar.`,
+        image: `${import.meta.env.BASE_URL}tipos-de-gpu.svg`,
+        imageAlt: "Três cartões comparando GPU integrada, discreta e virtual quanto a onde vive, memória e melhor uso",
+        imageCaption: "Integrada, discreta e virtual: o que muda é onde a GPU vive e de onde vem a memória.",
+      },
+      {
+        heading: "Para que serve, o gargalo e a cola do post",
+        body: `Onde houver muitos cálculos que podem acontecer em paralelo, tem GPU. Os usos listados pela Unity são **jogos e 3D em tempo real**, **VR e AR** (que exigem taxas de quadros altas e estáveis para o conforto do usuário), **IA e aprendizado de máquina** (treino e inferência envolvem enormes quantidades de operações matemáticas paralelas), **vídeo e criação de conteúdo**, **simulação e digital twins** e **gráficos na web**, com APIs como WebGL.
+
+Um conceito útil é o de jogo **limitado pela GPU** (GPU-bound): acontece quando a GPU leva mais tempo para renderizar um quadro do que a CPU levou para prepará-lo. Resolução alta, shaders complexos e sobreposição (overdraw) aumentam o tempo de quadro e derrubam a taxa de quadros. Para descobrir quem é o gargalo, usa-se **profiling**.
+
+E dá para rodar um computador sem GPU? Dá: alguns servidores não precisam renderizar nada, e a renderização por software usa a CPU para gerar as imagens. Só que, para 3D em tempo real exigente, isso costuma ser bem menos eficiente.
+
+**Resumo-lembrete:** a GPU é um processador paralelo feito para calcular milhares de pixels de uma vez. O pipeline vai de enviar, processar vértices, rasterizar e sombrear até a saída. Existem GPUs integradas, discretas e virtuais. Hoje ela vai além dos jogos: IA, vídeo, simulação e web. E, conectando com a disciplina, ela é a máquina que calcula as amostras que chamamos de pixels.
+
+Texto baseado no glossário da Unity (versão em português, que a própria página indica ter sido traduzida automaticamente). As ilustrações e o exemplo de shader deste post são esquemáticos e foram feitos para ele.`,
+        source: { label: "Unidade de Processamento Gráfico (GPU) — Glossário da Unity", url: "https://unity.com/pt/glossary/graphics-processing-unit-gpu" },
       },
     ],
   },
