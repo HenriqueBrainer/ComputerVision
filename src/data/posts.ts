@@ -592,63 +592,45 @@ Texto baseado no glossário da Unity (versão em português, que a própria pág
   {
     id: 8,
     slug: "Post 8",
-    title: "????",
+    title: "Reflexão final: o que o blog e a disciplina me ensinaram",
     subtitle: "",
-    description: "",
+    description:
+      "Uma reflexão sobre o que eu publiquei no blog ao longo do semestre e o que vi em Computação Visual, com um olhar sobre bordas, domínio da frequência e a complexidade de representar o mundo real em uma imagem.",
     tag: "Post 8",
-    date: "?? ??, 2026",
-    readTime: "5 min",
+    date: "12 novembro, 2026",
+    readTime: "4 min",
     image: "https://cdn.prod.website-files.com/61a51a6fff9085700039fcd8/63bc673c33fd7c7a6843246b_vis%C3%A3o%20computacional.png",
     heroImage: "",
     color: "#818cf8",
     sections: [
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "A primeira impressão",
+        body: `Vou ser sincero: em alguns momentos do semestre, tive a impressão de que **tinha escolhido o curso errado** kkkk.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+Mesmo assim, a disciplina foi **interessante, de certo modo**. Entender, num certo nível, como a plotagem gráfica acontece é instigante. Hoje eu sei que, por trás de uma imagem na tela, existe uma grade de **números** (os pixels, como vimos no Post 5) que passa por transformações e filtros até a GPU transformar tudo em cor no monitor.`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "Bordas e domínio da frequência",
+        body: `Os dois assuntos que mais me interessaram foram a **detecção de bordas** e o **domínio da frequência**. Os dois são muito úteis para resolver problemas atuais. Ao mesmo tempo, confesso que essa história de ondas e frequências me pareceu meio "viajada" no começo.
 
-          ____________________________________________________________
+Uma **borda** é um lugar da imagem onde a intensidade muda de repente, do escuro para o claro, por exemplo. Filtros como **Sobel** e **Prewitt** procuram essas mudanças passando uma pequena matriz (o **kernel**) por cima de cada pixel, na operação chamada **convolução**. Como esses filtros também realçam o **ruído**, o **Canny** suaviza a imagem antes e depois limpa o resultado, ficando só com as bordas que importam.
 
-          ____________________________________________________________
+Já o **domínio da frequência** parte da ideia de que a imagem é uma **soma de ondas**. Com a **FFT**, a gente enxerga a imagem pelo espectro: as **baixas frequências** são as partes suaves e as **altas frequências** são bordas, detalhes e ruído. Filtrar vira uma **multiplicação** no espectro: o **passa-baixa** borra a imagem e o **notch** remove padrões repetitivos indesejados. No fundo, detectar bordas é um jeito de realçar as altas frequências, e é isso que liga os dois assuntos.`,
+        code: `# Bordas: onde a intensidade muda de repente
+bordas = filtro_de_bordas(imagem)      # Sobel, Prewitt, Canny
 
-          ____________________________________________________________
-        `,
+# Frequência: filtrar = multiplicar o espectro
+espectro = fft(imagem)
+espectro = espectro * mascara          # passa-baixa, notch, ...
+imagem_filtrada = ifft(espectro)`,
       },
       {
-        heading: "????",
-        body: `
-          ____________________________________________________________
+        heading: "A complexidade de representar o mundo real",
+        body: `O que mais pesou na minha reflexão foi perceber a **complexidade de identificar e representar o mundo real em uma imagem**. Isso mudou minha capacidade analítica: se um dia eu trabalhar em um projeto que envolva imagem, vou saber que estou lidando com uma complexidade bem maior do que parece à primeira vista.
 
-          ____________________________________________________________
+Ela aparece em vários pontos. Na **amostragem**: se a imagem for amostrada com poucos pixels, surge o **aliasing** e a informação original se perde. Na **quantização**: o mundo é contínuo, mas a imagem guarda só 256 níveis por canal (em 8 bits). No **ruído** e na iluminação, que atrapalham tudo. E até na definição de borda, porque o que o computador considera uma borda depende de parâmetros que alguém precisou escolher.
 
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
-      },
-      {
-        heading: "????",
-        body: `
-          ____________________________________________________________
-
-          ____________________________________________________________
-
-          ____________________________________________________________
-
-          ____________________________________________________________
-        `,
+**Resumo-lembrete:** bordas são mudanças bruscas de intensidade; frequência é ver a imagem como soma de ondas e filtrar o espectro; e, por baixo de tudo, uma imagem é uma aproximação do mundo real.`,
       },
     ],
   },

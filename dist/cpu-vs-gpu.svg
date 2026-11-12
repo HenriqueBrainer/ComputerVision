@@ -1,0 +1,157 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: 'DM Serif Display', Georgia, serif; fill: #f0f0f0; }
+      .caption { font-family: 'DM Sans', system-ui, sans-serif; fill: #707070; }
+      .label { font-family: 'DM Sans', system-ui, sans-serif; fill: #b0b0b0; }
+      .strong { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 600; fill: #f0f0f0; }
+      .tag { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 600; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="960" height="540" fill="#080808" />
+<text class="title" x="60" y="52" font-size="26">CPU vs GPU: poucos músculos, ou muitas mãos?</text>
+<text class="caption" x="60" y="80" font-size="14">A GPU divide o trabalho em muitas operações pequenas e resolve todas ao mesmo tempo</text>
+<rect x="60" y="116" width="380" height="330" fill="#111111" stroke="#818cf8" stroke-opacity="0.45" stroke-width="1.5"/>
+<text class="tag" x="84" y="150" font-size="14" fill="#818cf8">CPU</text>
+<text class="strong" x="84" y="176" font-size="17">Poucos núcleos, bem potentes</text>
+<rect x="100" y="206" width="110" height="100" fill="#818cf8" fill-opacity="0.18" stroke="#818cf8" stroke-width="1.5"/>
+<text class="strong" x="155" y="262" font-size="15" text-anchor="middle">núcleo 1</text>
+<rect x="250" y="206" width="110" height="100" fill="#818cf8" fill-opacity="0.18" stroke="#818cf8" stroke-width="1.5"/>
+<text class="strong" x="305" y="262" font-size="15" text-anchor="middle">núcleo 2</text>
+<rect x="100" y="330" width="110" height="100" fill="#818cf8" fill-opacity="0.18" stroke="#818cf8" stroke-width="1.5"/>
+<text class="strong" x="155" y="386" font-size="15" text-anchor="middle">núcleo 3</text>
+<rect x="250" y="330" width="110" height="100" fill="#818cf8" fill-opacity="0.18" stroke="#818cf8" stroke-width="1.5"/>
+<text class="strong" x="305" y="386" font-size="15" text-anchor="middle">núcleo 4</text>
+<text class="label" x="250" y="470" font-size="13" text-anchor="middle">Tarefas uma depois da outra: lógica do jogo, instruções</text>
+<rect x="520" y="116" width="380" height="330" fill="#111111" stroke="#fb923c" stroke-opacity="0.45" stroke-width="1.5"/>
+<text class="tag" x="544" y="150" font-size="14" fill="#fb923c">GPU</text>
+<text class="strong" x="544" y="176" font-size="17">Muitos núcleos, bem simples</text>
+<rect x="548" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="570" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="592" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="614" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="636" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="658" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="680" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="702" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="724" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="746" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="768" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="790" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="812" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="834" y="200" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="548" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="570" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="592" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="614" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="636" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="658" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="680" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="702" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="724" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="746" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="768" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="790" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="812" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="834" y="222" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="548" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="570" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="592" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="614" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="636" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="658" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="680" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="702" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="724" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="746" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="768" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="790" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="812" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="834" y="244" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="548" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="570" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="592" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="614" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="636" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="658" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="680" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="702" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="724" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="746" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="768" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="790" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="812" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="834" y="266" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="548" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="570" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="592" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="614" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="636" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="658" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="680" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="702" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="724" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="746" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="768" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="790" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="812" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="834" y="288" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="548" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="570" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="592" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="614" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="636" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="658" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="680" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="702" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="724" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="746" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="768" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="790" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="812" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="834" y="310" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="548" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="570" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="592" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="614" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="636" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="658" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="680" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="702" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="724" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="746" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="768" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="790" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="812" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="834" y="332" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="548" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="570" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="592" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="614" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="636" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="658" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="680" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="702" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="724" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="746" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="768" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="790" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="812" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="834" y="354" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="548" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="570" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.95"/>
+<rect x="592" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="614" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="636" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="658" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="680" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.65"/>
+<rect x="702" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="724" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<rect x="746" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="768" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="790" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.8"/>
+<rect x="812" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.35"/>
+<rect x="834" y="376" width="17" height="17" fill="#fb923c" fill-opacity="0.5"/>
+<text class="label" x="710" y="470" font-size="13" text-anchor="middle">Milhares de contas em paralelo: um pixel para cada núcleo</text>
+<text class="caption" x="480" y="285" font-size="14" text-anchor="middle">vs</text>
+<text class="caption" x="60" y="510" font-size="12">Ilustração esquemática: o número real de núcleos varia muito entre CPUs e GPUs.</text></svg>
